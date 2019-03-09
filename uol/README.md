@@ -44,4 +44,61 @@ Nesta versão, a organização da página é modificada. Agora, as notícias de 
 
 Esta é a versão utilizada até os dias de hoje, portanto todas as notícias ainda estão disponíveis e são acessíveis pelos formatos de página atuais.
 
+## Explorando as notícias
+Onde estão os principais dados de cada notícia? Como podem ser acessados? Quais as diferenças de uma versão para outra?
 
+### Folha de São Paulo
+As notícias que redirecionam para a página da Folha de São Paulo estão no domínio [www1.folha.uol.com.br](https://www1.folha.uol.com.br). É possível identificar os seguintes dados destas notícias:
+* **Categoria** - armazenada dentro do elemento `h1` em uma `div class=section-masthead`.
+* **Título** - o título da notícia é acessível pelo elemento `<h1 itemprop="headline">`, dentro do `header` do `article id=news`.
+* **Autor** - o autor é acessível pelo primeiro elemento `<b>` dentro de `<div class="author" itemprop="author">`.
+* **Data e Hora** - acessível pelo elemento `<time>` logo após o autor, também dentro do `header` do `article id=news`.
+* **URL**
+* **Fonte** - Folha de São Paulo
+
+**Observação:** A folha possui um mecanismo de limitação da leitura por assinatura, portanto múltiplas requisições podem ser um problema.
+
+### UOL - Versão Antiga
+Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
+* **Categoria** - encontrada no hyperlink de classe `canal` dentro da `div id=barra-estacao`.
+* **Título** - o título da notícia é acessível pelo `h1` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
+* **Autor** - o autor é acessível pelo primeiro elemento da `div id=credito-texto`, dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
+* **Data e Hora** - acessível pelo elemento `<h2>` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
+* **Local** - acessível pelo segundo elemento da `div id=credito-texto`, dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
+* **URL**
+* **Fonte** - UOL Notícias, UOL Esportes, etc.
+
+### UOL - Versão Atualizada I
+Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
+* **Categoria** - encontrada no elemento `h4` de classe `title-name`, dentro da `div` de classe `title`.
+* **Título** - o título da notícia é acessível pelo elemento `h1` dentro do `header` do `article`.
+* **Autor** - o autor é acessível pelo elemento `p` de classe `p-author`.
+* **Data e Hora** - acessível pelo elemento `p` que contém ambas as classes `p-author time`.
+* **Local** - acessível pelo elemento `p` que contém ambas a classe `p-author-local`.
+* **URL**
+* **Fonte** - UOL Notícias, UOL Esportes, etc.
+
+### UOL - Versão Atualizada II
+Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
+* **Categoria** - encontrada no hyperlink de classe `estacao`, dentro da `div id=titulo-uol`.
+* **Título** - o título da notícia é acessível pelo elemento `h1` dentro do `header` do `article id=conteudo-principal`.
+* **Autor** - o autor é acessível pelo elemento `span` de classe `com-autor` dentro do header.
+* **Data e Hora** - acessível pelo elemento `time` dentro do header.
+* **URL**
+* **Fonte** - UOL Notícias, UOL Esportes, etc.
+
+### UOL - Versão Atualizada III
+Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
+* **Categoria** - encontrada no hyperlink de classe `estacao`, dentro da `div id=titulo-uol`.
+* **Título** - o título da notícia é acessível pelo elemento `h1` dentro da `div id=texto`.
+* **Autor** - o autor é acessível pelo primeiro elemento do `span` de classe `autor` dentro da `div id=texto`.
+* **Data e Hora** - acessível pelo elemento `em` de classe `dataAtualizacao` dentro da `div id=texto`.
+* **Local** - acessível pelo segundo elemento do `span` de classe `autor` dentro da `div id=texto`.
+* **URL**
+* **Fonte** - UOL Notícias, UOL Esportes, etc.
+
+### Páginas Não Relacionadas
+Algumas notícias da página principal da UOL, principalmente em suas versões antigas, não são de fato notícias. Geralmente são galerias de fotos, jogos, horóscopo, entre outros tipos de páginas não relevantes para essa busca. Por isso, é importante tratar uma página para ser ignorada quando não forem encontrados os elementos básicos de uma notícia.
+
+### Páginas Não Encontradas
+Quando uma notícia não é encontrada, somos redirecionados para a página inicial da UOL com um pós-fixo `/#404` na URL. A página é carregada normalmente com um modal informando o erro, portanto a página em si não retorna um `404`. Por isso, é importante tratar esse caso especial em que o resultado da requisição é `200` mas na verdade temos um erro.
