@@ -33,4 +33,15 @@ Nesta versão, todas as notícias se encontram dentro de uma `div id=corpoEsquer
 
 Novamente, algumas notícias não existem mais e outras são redirecionadas para a versão atual de seus provedores. No entanto, também é possível encontrar notícias no modelo de layout antigo.
 
+### Versão 2013
+A organização da página nesta versão é exatamente a mesma da versão de 2012, onde o conteúdo de notícias fica na `div` de id `modulos`, dentro de `corpoEsquerdaPrincipal`. Isto leva a crer que esta versão e a de 2012 são, na verdade, a mesma. No entanto, a versão de 2012 encontra-se com o link com a folha de estilos desconfigurado.
+
+### Versão 2014
+Nesta versão a organização também segue a mesma estrutura de markup, porém com uma nova folha de estilos. Dessa forma, a aparência muda mas o conteúdo segue disponível pelo mesmo processo.
+
+### Versão 2015-2019
+Nesta versão, a organização da página é modificada. Agora, as notícias de maior destaque estão separadas em uma `div id=horizontalEspeciais`. O restante das notícias está armazenado em uma `div id=corpoEsquerdaPrincipal`.
+
+Esta é a versão utilizada até os dias de hoje, portanto todas as notícias ainda estão disponíveis e são acessíveis pelos formatos de página atuais.
+
 
