@@ -1,6 +1,15 @@
 # UOL (desde 2009)
 A página de notícias do site [uol.com.br](http://uol.com.br) possui um histórico de notícias acessível que exibe a página inicial do site para cada dia desde o início de 2009. Dessa forma, devemos acessar o conteúdo de cada uma dessas páginas iniciais e realizar o web scraping.
 
+## TODO
+- [ ] Identificar os diversos tipos de notícias
+- [ ] Filtrar as notícias que serão coletadas (remover horóscopos, clima, etc)
+- [ ] Coletar informações de tipos de mídia diferentes (fotos, vídeos, etc)
+- [ ] Transformar as versões da homepage em classes
+- [ ] Transformar as versões das notícias em classes
+- [ ] Iterar ao longo dos dias
+- [ ] Mudar o tipo do arquivo CSV para *append*
+
 ## Explorando o Histórico
 
 ### Versões
