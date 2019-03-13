@@ -5,8 +5,8 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 - [ ] Identificar os diversos tipos de notícias
 - [ ] Filtrar as notícias que serão coletadas (remover horóscopos, clima, etc)
 - [ ] Coletar informações de tipos de mídia diferentes (fotos, vídeos, etc)
-- [ ] Transformar as versões da homepage em classes
-- [ ] Transformar as versões das notícias em classes
+- [X] Transformar as versões da homepage em classes
+- [X] Transformar as versões das notícias em classes
 - [ ] Iterar ao longo dos dias
 - [ ] Mudar o tipo do arquivo CSV para *append*
 
