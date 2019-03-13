@@ -77,3 +77,14 @@ class UolNoticiasV1(News):
         return [self.title, self.category, self.author, self.date,
                 self.location, self.url, self.source]
 
+    def to_dict(self):
+        return {
+            'Title': self.title,
+            'Category': self.category,
+            'Author': self.author,
+            'Date': self.date,
+            'Location': self.location,
+            'URL': self.url,
+            'Source': self.source
+        }
+

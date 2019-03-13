@@ -7,8 +7,8 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 - [ ] Coletar informações de tipos de mídia diferentes (fotos, vídeos, etc)
 - [X] Transformar as versões da homepage em classes
 - [X] Transformar as versões das notícias em classes
-- [ ] Iterar ao longo dos dias
-- [ ] Mudar o tipo do arquivo CSV para *append*
+- [X] Iterar ao longo dos dias
+- [X] Mudar o tipo do arquivo CSV para *append*
 
 ## Explorando o Histórico
 
