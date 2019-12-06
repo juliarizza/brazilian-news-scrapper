@@ -7,8 +7,14 @@
 
 import scrapy
 
+from uol.utils import formatted_text
+
 
 class UolItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    title = scrapy.Field(serializer=formatted_text)
+    author = scrapy.Field(serializer=formatted_text)
+    category = scrapy.Field(serializer=formatted_text)
+    location = scrapy.Field(serializer=formatted_text)
+    datetime = scrapy.Field()
+    comments_count = scrapy.Field(serializer=int)
+    url = scrapy.Field(serializer=str)
