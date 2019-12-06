@@ -26,10 +26,10 @@ class UOL2009Spider(scrapy.Spider):
     max_date = datetime.date(2011, 10, 4)
 
     def start_requests(self):
-        urls = ["https://noticias.uol.com.br/arquivohome/20090102home_23.jhtm"]
-        # for date in daterange(self.min_date, self.max_date):
-        #     date_url = URL.format(date=date.strftime('%Y%m%d'))
-        #     urls.append(date_url)
+        urls = []
+        for date in daterange(self.min_date, self.max_date):
+            date_url = URL.format(date=date.strftime('%Y%m%d'))
+            urls.append(date_url)
 
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -38,14 +38,15 @@ class UOL2009Spider(scrapy.Spider):
         extractor = LinkExtractor(
             deny=[r'.*\/album\/.*', r'.*\/tempo\/.*', r'.*javascript*'],
             deny_domains=[
-                # not relevant
+                # NOT RELEVANT
+                # common links in the homepage that are not relevant as news
                 'shopping.uol.com.br', 'busca.uol.com.br', 'jogos.uol.com.br',
-                'tvuol.uol.com.br', 'bn.uol.com.br', 'tempoagora.uol.com.br',
-                'itodas.uol.com.br', 'horoscopo.uol.com.br',
-                # not found
-                'estrelando.uol.com.br', 'mdemulher.abril.uol.com.br',
-                'contigo.abril.uol.com.br', 'boasaude.uol.com.br',
-                'portaldocoracao.uol.com.br'
+                'tvuol.uol.com.br', 'horoscopo.uol.com.br', 'criancas.uol.com.br',
+                # NOT FOUND
+                # not existing pages that do not imediately raise an error
+                # and slower the crawler with retrials
+                'minhavida.uol.com.br', 'mixirica.uol.com.br',
+                'basilico.uol.com.br'
             ],
             restrict_css=[
                 '#conteudo #mod-rotativo',
@@ -65,7 +66,10 @@ class UOL2009Spider(scrapy.Spider):
         elif 'blogosfera' in response.url:
             return self.extract_blogosfera(response)
         else:
-            return self.extract_uol_old_version(response)
+            uol_news = self.extract_uol_old_version(response)
+            if not uol_news:
+                uol_news = self.extract_uol(response)
+            return uol_news
     
     def extract_fsp(self, response):
         CATEGORY_SELECTOR = '.section-masthead h1::text'
@@ -131,13 +135,17 @@ class UOL2009Spider(scrapy.Spider):
 
     def extract_uol_old_version(self, response):
         CATEGORY_SELECTOR = '#barra-estacao .canal::text, '\
-                            '#barra-estacao .nome-canal img::attr("title")'
+                            '#barra-estacao .nome-canal img::attr("title"), '\
+                            '#barra-estacao .logo-texto::attr("title"), '\
+                            '#barra-estacao #logo-texto::attr("title"), '\
+                            '#barra-estacao a::text'
         TITLE_SELECTOR = '#titulo .conteudo h1::text, '\
                          '#materia h1::text'
         AUTHOR_SELECTOR = '#titulo .conteudo #credito-texto::text, '\
                           '#materia #credito-texto::text'
         DATETIME_SELECTOR = '#titulo .conteudo h2::text, '\
                             '#materia h2::text, '\
+                            '#materia h5::text, '\
                             '#titulo .conteudo .data::text'
 
         loader = ItemLoader(item=UolItem(), response=response)

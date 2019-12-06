@@ -8,8 +8,9 @@ def daterange(start_date, end_date):
         date += delta
 
 def formatted_text(text=''):
-    return text.strip() \
-            .replace('<BR>', ' ') \
-            .replace('<br>', ' ') \
-            .replace('<BR />', ' ') \
-            .replace('<br />', ' ')
+    return text.replace('<BR>', ' ') \
+               .replace('<br>', ' ') \
+               .replace('<BR />', ' ') \
+               .replace('<br />', ' ') \
+               .replace('\n', ' ') \
+               .strip()

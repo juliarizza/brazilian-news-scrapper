@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'uol.spiders'
 LOG_FILE = 'uol.log'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'uol (+http://www.yourdomain.com)'
+USER_AGENT = 'BrazilianNewsScrapper/0.1 (+https://github.com/juliarizza/brazilian-news-scrapper)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
