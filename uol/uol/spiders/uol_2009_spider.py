@@ -2,6 +2,7 @@ import scrapy
 import datetime
 
 from scrapy.loader import ItemLoader
+from scrapy.linkextractors import LinkExtractor
 
 from uol.items import UolItem
 from uol.utils import daterange
@@ -19,12 +20,6 @@ class UOL2009Spider(scrapy.Spider):
 
     min_date = datetime.date(2009, 1, 1)
     max_date = datetime.date(2011, 10, 4)
-    ignore_containing = [
-        r'javascript', # page events
-        r'tvuol', # videos
-        r'/album', # photos
-        r'/shopping' # ecommerce
-    ]
 
     def start_requests(self):
         urls = ["https://noticias.uol.com.br/arquivohome/20090101home_23.jhtm"]
@@ -36,17 +31,22 @@ class UOL2009Spider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
    
     def parse(self, response):
-        MODULOS_SELECTOR = '#modulos a::attr("href")'
-        MANCHETES_SELECTOR = '#novas-manchetes a::attr("href")'
-        
-        regex = r"^(?!{list_to_ignore}).*$".format(
-            list_to_ignore='|'.join(self.ignore_containing)
+        extractor = LinkExtractor(
+            deny=[r'.*\/album\/.*', r'.*\/tempo\/.*', r'.*javascript*'],
+            deny_domains=[
+                'shopping.uol.com.br', 'busca.uol.com.br', 'jogos.uol.com.br',
+                'tvuol.uol.com.br', 'bn.uol.com.br', 'tempoagora.uol.com.br',
+                'itodas.uol.com.br', 'horoscopo.uol.com.br',
+            ],
+            restrict_css=[
+                '#conteudo #mod-rotativo',
+                '#conteudo #mod-horz',
+                '#conteudo #col-mod'
+            ],
+            unique=True
         )
-        
-        for anchor in set(response.css(MODULOS_SELECTOR).re(regex)):
-            yield response.follow(anchor, callback=self.extract)
 
-        for anchor in set(response.css(MANCHETES_SELECTOR).re(regex)):
+        for anchor in extractor.extract_links(response):
             yield response.follow(anchor, callback=self.extract)
 
     def extract(self, response):
