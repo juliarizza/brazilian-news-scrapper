@@ -6,3 +6,11 @@ def daterange(start_date, end_date):
     while date <= end_date:
         yield date
         date += delta
+
+def beautify(text):
+    if text:
+        return text.strip() \
+                .replace('<BR>', ' ') \
+                .replace('<br>', ' ') \
+                .replace('<BR />', ' ') \
+                .replace('<br /', ' ')
