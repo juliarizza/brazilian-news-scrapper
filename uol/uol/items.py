@@ -18,3 +18,4 @@ class UolItem(scrapy.Item):
     datetime = scrapy.Field()
     comments_count = scrapy.Field(serializer=int)
     url = scrapy.Field(serializer=str)
+    source = scrapy.Field(serializer=str)

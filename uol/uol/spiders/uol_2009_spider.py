@@ -73,6 +73,7 @@ class UOL2009Spider(scrapy.Spider):
         loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_css('comments_count', COMMENTS_COUNT_SELECTOR)
         loader.add_value('url', response.url)
+        loader.add_value('source', 'Folha de São Paulo')
         return loader.load_item()
 
     def extract_uol(self, response):
@@ -92,6 +93,7 @@ class UOL2009Spider(scrapy.Spider):
         loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_css('comments_count', COMMENTS_COUNT_SELECTOR)
         loader.add_value('url', response.url)
+        loader.add_value('source', 'UOL')
         return loader.load_item()
 
     def extract_blogosfera(self, response):
@@ -111,4 +113,5 @@ class UOL2009Spider(scrapy.Spider):
         loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_css('comments_count', COMMENTS_COUNT_SELECTOR)
         loader.add_value('url', response.url)
+        loader.add_value('source', 'UOL')
         return loader.load_item()
