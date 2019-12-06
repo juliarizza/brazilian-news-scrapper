@@ -3,3 +3,4 @@ venv/
 */crawls/
 *.log
 *.csv
+.vscode/
