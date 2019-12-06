@@ -14,6 +14,8 @@ BOT_NAME = 'uol'
 SPIDER_MODULES = ['uol.spiders']
 NEWSPIDER_MODULE = 'uol.spiders'
 
+# Logging config
+LOG_FILE = 'uol.log'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'uol (+http://www.yourdomain.com)'
