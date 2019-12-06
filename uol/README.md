@@ -14,6 +14,20 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 - [x] Habilitar pausa e continuação do processo de crawl
 - [ ] Configurar _bypass_ da Paywall da Folha de São Paulo
 
+## Execução
+
+Para executar o crawler do UOL, rode no seu terminal:
+
+```
+scrapy crawl [nome-do-crawler]
+```
+
+Por exemplo:
+
+```
+scrapy crawl uol_2009
+```
+
 ## Explorando o Histórico
 
 ### Versões
@@ -28,7 +42,7 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 
 ### Código Fonte
 
-Acessando a página de [arquivo de notícias da UOL](), podemos analisar seu código fonte.
+Acessando a página de [arquivo de notícias da UOL](https://noticias.uol.com.br/arquivohome), podemos analisar seu código fonte.
 
 O carregamento das páginas antigas está contido em uma `div` de id `conteudo`. Dentro dessa `div` é utilizado um `iframe` que carrega cada página antiga. O seguinte link é utilizado no iframe para a data de 01/01/2009:
 
@@ -86,19 +100,19 @@ As notícias que redirecionam para a página da Folha de São Paulo estão no do
 
 **Observação:** A folha possui um mecanismo de limitação da leitura por assinatura, portanto múltiplas requisições podem ser um problema.
 
-### UOL - Versão Antiga
+### UOL - Versão 2009
 
-Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
+Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes, que possui uma aparência mais antiga que era utilizada entre os anos 2009 e 2011. É possível identificar os seguintes dados destas notícias:
 
-- **Categoria** - encontrada no hyperlink de classe `canal` dentro da `div id=barra-estacao`.
-- **Título** - o título da notícia é acessível pelo `h1` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
-- **Autor** - o autor é acessível pelo primeiro elemento da `div id=credito-texto`, dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
-- **Data e Hora** - acessível pelo elemento `<h2>` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
-- **Local** - acessível pelo segundo elemento da `div id=credito-texto`, dentro da `div` de classe `conteudo` que pertence à `div id=titulo`.
+- **Categoria** - encontrada no hyperlink de classe `canal`, ou no título da imagem de classe `nome-canal` ou `logo-texto` (ou então `id=logo-texto`), dentro da `div id=barra-estacao`. Para uma busca final genérica, também pode ser definido como o primeiro hyperlink dentro de `div id=barra-estacao`.
+- **Título** - o título da notícia é acessível pelo `h1` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`, ou também pode estar no `h1` dentro de uma `div id=materia`.
+- **Autor** - o autor é acessível pelo primeiro elemento da `div id=credito-texto`, dentro da `div` de classe `conteudo` que pertence à `div id=titulo`. Em outros casos, o autor está nessa mesma `div id=credito-texto`, porém dentro de uma `div id=materia`.
+- **Data e Hora** - acessível pelo elemento `h2` dentro da `div` de classe `conteudo` que pertence à `div id=titulo`, ou pelos elementos `h2` ou `h5` que pertencem à `div id=materia`, ou ainda pela `div class=data` que pertence a uma `div class=conteudo` dentro de `div id=titulo`.
+- **Local** - acessível pelo segundo elemento encontrado na busca do Autor, se ele existir.
 - **URL**
-- **Fonte** - UOL Notícias, UOL Esportes, etc.
+- **Fonte** - UOL
 
-### UOL - Versão Atualizada I
+### UOL - Versão 2012
 
 Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
 
@@ -111,7 +125,7 @@ Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes
 - **URL**
 - **Fonte** - UOL Notícias, UOL Esportes, etc.
 
-### UOL - Versão Atualizada II
+### UOL - Versão 2013
 
 Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
 
@@ -123,7 +137,7 @@ Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes
 - **URL**
 - **Fonte** - UOL Notícias, UOL Esportes, etc.
 
-### UOL - Versão Atualizada III
+### UOL - Versão Atualizada 2014+
 
 Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes. É possível identificar os seguintes dados destas notícias:
 
@@ -136,10 +150,36 @@ Refere-se a qualquer subdomínio comum da UOL, como UOL Notícias e UOL Esportes
 - **URL**
 - **Fonte** - UOL Notícias, UOL Esportes, etc.
 
-### Páginas Não Relacionadas
+### Páginas Não Relevantes
 
-Algumas notícias da página principal da UOL, principalmente em suas versões antigas, não são de fato notícias. Geralmente são galerias de fotos, jogos, horóscopo, entre outros tipos de páginas não relevantes para essa busca. Por isso, é importante tratar uma página para ser ignorada quando não forem encontrados os elementos básicos de uma notícia.
+Algumas notícias da página principal da UOL, principalmente em suas versões antigas, não são de fato notícias. Geralmente são galerias de fotos, jogos, horóscopo, entre outros tipos de páginas não relevantes para essa busca. Por isso, é importante tratar uma página para ser ignorada quando não forem encontrados os elementos básicos de uma notícia. Essas páginas são informadas no atributo `deny_domains` do `LinkExtractor` de cada spider.
 
 ### Páginas Não Encontradas
 
-Quando uma notícia não é encontrada, somos redirecionados para a página inicial da UOL com um pós-fixo `/#404` na URL. A página é carregada normalmente com um modal informando o erro, portanto a página em si não retorna um `404`. Por isso, é importante tratar esse caso especial em que o resultado da requisição é `200` mas na verdade temos um erro.
+Quando uma notícia não é encontrada, somos redirecionados para a página inicial da UOL com um sufixo `/#404` na URL. A página é carregada normalmente com um modal informando o erro, portanto a página em si não retorna um status `404`. No entanto, como não é encontrado título na notícia, a página é automaticamente ignorada pelo Scrapy.
+
+## Fluxo de Extração
+
+O processo de extração dos dados funciona da seguinte forma:
+
+1. A spider é iniciada, o que faz com que o arquivo CSV para os dados e o arquivo de log sejam criados.
+2. As URLs para requisição são definidas a partir das datas dadas.
+3. Para cada URL acessada, um `LinkExtractor` procura por todos os links da página, de acordo com as regras dadas.
+4. Para cada link, é feito o acesso e são extraídos os dados de acordo com o tipo de página.
+5. Os dados são gravados no arquivo CSV.
+
+## Pipelines
+
+No processo de extração das informações, o crawler também executa algumas rotinas adicionais para cada dado. Essas rotinas estão definidas em `pipelines.py`.
+
+No momento, as seguintes rotinas são executadas ao iniciar a spider e ao receber cada item extraído:
+
+1. **Verificação de título** - se a notícia não tem título, deve ser descartada.
+2. **Verificação de duplicata** - se a notícia já foi extraída pela spider, deve ser descartada.
+3. **Escrita dos dados em CSV** - cada item extraído deve ser escrito em um arquivo CSV.
+
+## Persistência
+
+O processo de extração armazena no diretório `crawls` o status do crawler. Dessa forma, se o processo precisar ser parado, é possível saber a última URL a ter seus dados extraídos, e continuar a partir da próxima URL quando a spider for executada novamente.
+
+**Atenção:** cada spider deve ter seu próprio caminho dentro deste diretório.
