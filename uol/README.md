@@ -12,6 +12,7 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 - [ ] Extrair a quantidade de comentários (lazyload via JavaScript)
 - [x] Tratar redirecionamento para `/#404` _(tratado automaticamente pelo Scrapy)_
 - [ ] Habilitar pausa e continuação do processo de crawl
+- [ ] Configurar _bypass_ da Paywall da Folha de São Paulo
 
 ## Explorando o Histórico
 
