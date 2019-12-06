@@ -5,13 +5,13 @@ A página de notícias do site [uol.com.br](http://uol.com.br) possui um histór
 ## TODO
 
 - [ ] Identificar os diversos tipos de notícias
-- [ ] Filtrar as notícias que serão coletadas (remover horóscopos, clima, etc)
+- [x] Filtrar as notícias que serão coletadas (remover horóscopos, clima, etc)
 - [ ] Coletar informações de tipos de mídia diferentes (fotos, vídeos, etc)
 - [x] Iterar ao longo dos dias
-- [ ] Mudar o tipo do arquivo CSV para _append_
-- [ ] Implementar cada tipo de notícia como um item diferente
-- [ ] Extrair a quantida de comentários (lazyload via JavaScript)
-- [ ] Tratar redirecionamento para `/#404`
+- [x] Mudar o tipo do arquivo CSV para _append_
+- [ ] Extrair a quantidade de comentários (lazyload via JavaScript)
+- [x] Tratar redirecionamento para `/#404` _(tratado automaticamente pelo Scrapy)_
+- [ ] Habilitar pausa e continuação do processo de crawl
 
 ## Explorando o Histórico
 

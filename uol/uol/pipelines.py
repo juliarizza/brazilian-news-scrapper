@@ -32,13 +32,13 @@ class DuplicatesPipeline(object):
 
 class CSVPipeline(object):
     def open_spider(self, spider):
-        self.write_headers = not os.path.exists('data.csv')
+        write_headers = not os.path.exists('data.csv')
         self.file = open('data.csv', 'a+')
         self.csv_writer = csv.DictWriter(self.file, fieldnames=UolItem.fields)
 
-        if self.write_headers:
+        if write_headers:
             self.csv_writer.writeheader()
-            self.write_headers = False
+            write_headers = False
 
     def close_spider(self, spider):
         self.file.close()
