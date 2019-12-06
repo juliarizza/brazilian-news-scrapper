@@ -2,6 +2,7 @@ import scrapy
 import datetime
 
 from scrapy.loader import ItemLoader
+from scrapy.loader.processors import TakeFirst
 from scrapy.linkextractors import LinkExtractor
 
 from uol.items import UolItem
@@ -36,12 +37,14 @@ class UOL2009Spider(scrapy.Spider):
             deny_domains=[
                 'shopping.uol.com.br', 'busca.uol.com.br', 'jogos.uol.com.br',
                 'tvuol.uol.com.br', 'bn.uol.com.br', 'tempoagora.uol.com.br',
-                'itodas.uol.com.br', 'horoscopo.uol.com.br',
+                'itodas.uol.com.br', 'horoscopo.uol.com.br', # not relevant
+                'estrelando.uol.com.br', 'mdemulher.abril.uol.com.br' # not found
             ],
             restrict_css=[
                 '#conteudo #mod-rotativo',
                 '#conteudo #mod-horz',
-                '#conteudo #col-mod'
+                '#conteudo #col-mod',
+                '#colDireita #novas-manchetes'
             ],
             unique=True
         )
@@ -55,7 +58,7 @@ class UOL2009Spider(scrapy.Spider):
         elif 'blogosfera' in response.url:
             return self.extract_blogosfera(response)
         else:
-            return self.extract_uol(response)
+            return self.extract_uol_old_version(response)
     
     def extract_fsp(self, response):
         CATEGORY_SELECTOR = '.section-masthead h1::text'
@@ -66,6 +69,7 @@ class UOL2009Spider(scrapy.Spider):
         COMMENTS_COUNT_SELECTOR = '#article-comments header a.more::text'
         
         loader = ItemLoader(item=UolItem(), response=response)
+        loader.default_output_processor = TakeFirst()
         loader.add_css('title', TITLE_SELECTOR)
         loader.add_css('author', AUTHOR_SELECTOR)
         loader.add_css('category', CATEGORY_SELECTOR)
@@ -86,6 +90,7 @@ class UOL2009Spider(scrapy.Spider):
         COMMENTS_COUNT_SELECTOR = 'article .comments-total h4 strong::text'
 
         loader = ItemLoader(item=UolItem(), response=response)
+        loader.default_output_processor = TakeFirst()
         loader.add_css('title', TITLE_SELECTOR)
         loader.add_css('author', AUTHOR_SELECTOR)
         loader.add_css('category', CATEGORY_SELECTOR)
@@ -106,12 +111,29 @@ class UOL2009Spider(scrapy.Spider):
         COMMENTS_COUNT_SELECTOR = 'article .comments-total h4 strong::text'
 
         loader = ItemLoader(item=UolItem(), response=response)
+        loader.default_output_processor = TakeFirst()
         loader.add_css('title', TITLE_SELECTOR)
         loader.add_css('author', AUTHOR_SELECTOR)
         loader.add_css('category', CATEGORY_SELECTOR)
         loader.add_css('location', LOCATION_SELECTOR)
         loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_css('comments_count', COMMENTS_COUNT_SELECTOR)
+        loader.add_value('url', response.url)
+        loader.add_value('source', 'UOL')
+        return loader.load_item()
+
+    def extract_uol_old_version(self, response):
+        CATEGORY_SELECTOR = '#barra-estacao .canal::text'
+        TITLE_SELECTOR = '#titulo .conteudo h1::text'
+        AUTHOR_SELECTOR = '#titulo .conteudo #credito-texto::text'
+        DATETIME_SELECTOR = '#titulo .conteudo h2::text'
+
+        loader = ItemLoader(item=UolItem(), response=response)
+        loader.default_output_processor = TakeFirst()
+        loader.add_css('title', TITLE_SELECTOR)
+        loader.add_css('author', AUTHOR_SELECTOR)
+        loader.add_css('category', CATEGORY_SELECTOR)
+        loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_value('url', response.url)
         loader.add_value('source', 'UOL')
         return loader.load_item()
