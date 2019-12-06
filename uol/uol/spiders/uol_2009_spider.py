@@ -18,6 +18,9 @@ class UOL2009Spider(scrapy.Spider):
         This version lasts until 2011-10-04.
     """
     name = 'uol_2009'
+    custom_settings = {
+        'JOBDIR': 'crawls/uol_2009'
+    }
 
     min_date = datetime.date(2009, 1, 1)
     max_date = datetime.date(2011, 10, 4)
