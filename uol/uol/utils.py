@@ -12,4 +12,4 @@ def formatted_text(text=''):
             .replace('<BR>', ' ') \
             .replace('<br>', ' ') \
             .replace('<BR />', ' ') \
-            .replace('<br /', ' ')
+            .replace('<br />', ' ')

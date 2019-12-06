@@ -26,7 +26,7 @@ class UOL2009Spider(scrapy.Spider):
     max_date = datetime.date(2011, 10, 4)
 
     def start_requests(self):
-        urls = ["https://noticias.uol.com.br/arquivohome/20090101home_23.jhtm"]
+        urls = ["https://noticias.uol.com.br/arquivohome/20090102home_23.jhtm"]
         # for date in daterange(self.min_date, self.max_date):
         #     date_url = URL.format(date=date.strftime('%Y%m%d'))
         #     urls.append(date_url)
@@ -38,10 +38,14 @@ class UOL2009Spider(scrapy.Spider):
         extractor = LinkExtractor(
             deny=[r'.*\/album\/.*', r'.*\/tempo\/.*', r'.*javascript*'],
             deny_domains=[
+                # not relevant
                 'shopping.uol.com.br', 'busca.uol.com.br', 'jogos.uol.com.br',
                 'tvuol.uol.com.br', 'bn.uol.com.br', 'tempoagora.uol.com.br',
-                'itodas.uol.com.br', 'horoscopo.uol.com.br', # not relevant
-                'estrelando.uol.com.br', 'mdemulher.abril.uol.com.br' # not found
+                'itodas.uol.com.br', 'horoscopo.uol.com.br',
+                # not found
+                'estrelando.uol.com.br', 'mdemulher.abril.uol.com.br',
+                'contigo.abril.uol.com.br', 'boasaude.uol.com.br',
+                'portaldocoracao.uol.com.br'
             ],
             restrict_css=[
                 '#conteudo #mod-rotativo',
@@ -126,16 +130,30 @@ class UOL2009Spider(scrapy.Spider):
         return loader.load_item()
 
     def extract_uol_old_version(self, response):
-        CATEGORY_SELECTOR = '#barra-estacao .canal::text'
-        TITLE_SELECTOR = '#titulo .conteudo h1::text'
-        AUTHOR_SELECTOR = '#titulo .conteudo #credito-texto::text'
-        DATETIME_SELECTOR = '#titulo .conteudo h2::text'
+        CATEGORY_SELECTOR = '#barra-estacao .canal::text, '\
+                            '#barra-estacao .nome-canal img::attr("title")'
+        TITLE_SELECTOR = '#titulo .conteudo h1::text, '\
+                         '#materia h1::text'
+        AUTHOR_SELECTOR = '#titulo .conteudo #credito-texto::text, '\
+                          '#materia #credito-texto::text'
+        DATETIME_SELECTOR = '#titulo .conteudo h2::text, '\
+                            '#materia h2::text, '\
+                            '#titulo .conteudo .data::text'
 
         loader = ItemLoader(item=UolItem(), response=response)
         loader.default_output_processor = TakeFirst()
         loader.add_css('title', TITLE_SELECTOR)
-        loader.add_css('author', AUTHOR_SELECTOR)
+        loader.add_css(
+            'author',
+            AUTHOR_SELECTOR,
+            lambda v: v[0] if len(v) else None
+        )
         loader.add_css('category', CATEGORY_SELECTOR)
+        loader.add_css(
+            'location',
+            AUTHOR_SELECTOR,
+            lambda v: v[1] if len(v) >= 2 else None
+        )
         loader.add_css('datetime', DATETIME_SELECTOR)
         loader.add_value('url', response.url)
         loader.add_value('source', 'UOL')
